@@ -3,6 +3,7 @@
   "main": "./lib/md_plus.js",
   "version": "0.0.1",
   "dependencies" : {
-    "nodeunit": "*"
+    "nodeunit": "*",
+    "jsdom": "*"
   }
 }
