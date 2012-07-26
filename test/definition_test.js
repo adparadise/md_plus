@@ -4,6 +4,13 @@ var MDPlus = require('../lib/md_plus.js');
 
 exports.definition = {
     validate: {
+        description_provided: function (test) {
+            var def = new MDPlus.Definition();
+            var errors = def.validate();
+            test.ok(errors.anyErrors(), "should be invalid");
+            test.done();
+        },
+
         tag: {
             required: function (test) {
                 var def = new MDPlus.Definition({});
@@ -94,6 +101,52 @@ exports.definition = {
                 test.ok(def.match(h1), "should match correct tag");
                 test.done();
             });
+        },
+
+        matches_regexp_contents: function (test) {
+            var def = new MDPlus.Definition({
+                tag: 'h1',
+                content: /here/,
+                classRef: true
+            });
+            
+            jsdom.env(['<h1>here</h1>' + 
+                       '<h1>not</h1>' + 
+                       '<h2>here</h2>'].join(""), 
+                      [], 
+                      function (errors, window) {
+                          var root = window.document.children[0];
+                          var matchedH1 = root.getElementsByTagName('h1')[0];
+                          var unmatchedH1 = root.getElementsByTagName('h1')[1];
+                          var matchedH2 = root.getElementsByTagName('h2')[0];
+                          test.ok(def.match(matchedH1), "should match correct tag and matched contents");
+                          test.ok(!def.match(unmatchedH1), "should not match correct tag and mismatched contents");
+                          test.ok(!def.match(unmatchedH1), "should not match incorrect tag and matchd contents");
+                          test.done();
+                      });
+        },
+
+        matches_string_contents: function (test) {
+            var def = new MDPlus.Definition({
+                tag: 'h1',
+                content: "here",
+                classRef: true
+            });
+            
+            jsdom.env(['<h1>here</h1>' + 
+                       '<h1>not</h1>' + 
+                       '<h2>here</h2>'].join(""), 
+                      [], 
+                      function (errors, window) {
+                          var root = window.document.children[0];
+                          var matchedH1 = root.getElementsByTagName('h1')[0];
+                          var unmatchedH1 = root.getElementsByTagName('h1')[1];
+                          var matchedH2 = root.getElementsByTagName('h2')[0];
+                          test.ok(def.match(matchedH1), "should match correct tag and matched contents");
+                          test.ok(!def.match(unmatchedH1), "should not match correct tag and mismatched contents");
+                          test.ok(!def.match(unmatchedH1), "should not match incorrect tag and matchd contents");
+                          test.done();
+                      });
         }
     }
 };
