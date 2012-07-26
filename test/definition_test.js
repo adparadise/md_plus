@@ -4,22 +4,64 @@ var MDPlus = require('../lib/md_plus.js');
 
 exports.definition = {
     validate: {
-        requires_tag: function (test) {
-            var def = new MDPlus.Definition({});
-            var errors = def.validate();
-            var error = errors.errorForField('tag');
-            test.ok(errors.errorCount() > 0, "should have at least one validation message");
-            test.ok(error, "should have an error for the tag field");
-            test.done();
+        tag: {
+            required: function (test) {
+                var def = new MDPlus.Definition({});
+                var errors = def.validate();
+                var error = errors.errorForField('tag');
+                test.ok(error, "should have an error for the tag field");
+                test.done();
+            }
+        },
+        
+        classRef: {
+            required: function (test) {
+                var def = new MDPlus.Definition({});
+                var errors = def.validate();
+                var error = errors.errorForField('classRef');
+                test.ok(error, "should have an error for the classRef field");
+                test.done();
+            }
         },
 
-        requires_classRef: function (test) {
-            var def = new MDPlus.Definition({});
-            var errors = def.validate();
-            var error = errors.errorForField('classRef');
-            test.ok(errors.errorCount() > 0, "should have at least one validation message");
-            test.ok(error, "should have an error for the classRef field");
-            test.done();
+        children: {
+            array_if_present: function (test) {
+                var def = new MDPlus.Definition({
+                    tag: "h1",
+                    classRef: true,
+                    children: 1
+                });
+                var errors = def.validate();
+                var error = errors.errorForField('children');
+                test.ok(error, "should have an error for the children field");
+                test.done();
+            },
+
+            contains_definitions: function (test) {
+                var def = new MDPlus.Definition({
+                    tag: "h1",
+                    classRef: true,
+                    children: [1]
+                });
+                var errors = def.validate();
+                var error = errors.errorForField('children');
+                test.ok(error, "should have an error for the children field");
+                test.done();
+            },
+
+            are_all_valid: function (test) {
+                var invalidDef = new MDPlus.Definition({});
+                var def = new MDPlus.Definition({
+                    tag: "h1",
+                    classRef: true,
+                    children: [invalidDef]
+                });
+                var errors = def.validate();
+                var error = errors.errorForField('children');
+                test.ok(error, "should have an error for the children field");
+                test.ok(/invalid/.test(error.message), "should mention the invalid child");
+                test.done();
+            }
         }
     },
 
