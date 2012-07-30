@@ -51,11 +51,12 @@ var includesDefinition = function (candidates, tag, content) {
 
 exports.MDPlus = {
     Definition: {
-        Set: {
+        CandidatesBuilder: {
             getCandidatesAt: {
                 includes_child_definitions: function (test) {
                     var set = definitionSet();
-                    var candidates = set.getCandidatesAt([0]);
+                    var builder = new MDPlus.Definition.CandidatesBuilder(set);
+                    var candidates = builder.getCandidatesAt([0]);
                     test.ok(includesDefinition(candidates, 'H3', "Walkmen"), "should find the first child");
                     test.ok(includesDefinition(candidates, 'H3', "Cassettes"), "should find the second child");
                     test.done();
@@ -63,7 +64,8 @@ exports.MDPlus = {
 
                 includes_peer_definitions: function (test) {
                     var set = definitionSet();
-                    var candidates = set.getCandidatesAt([0]);
+                    var builder = new MDPlus.Definition.CandidatesBuilder(set);
+                    var candidates = builder.getCandidatesAt([0]);
                     test.ok(includesDefinition(candidates, 'H2', "Audio Equipment"), "should find the peer");
                     test.ok(includesDefinition(candidates, 'H2', "Technology"), "should find the peer");
                     test.done();
@@ -72,7 +74,8 @@ exports.MDPlus = {
                 at_top_level: {
                     only_top_level_definitions: function (test) {
                         var set = definitionSet();
-                        var candidates = set.getCandidatesAt([]);
+                        var builder = new MDPlus.Definition.CandidatesBuilder(set);
+                        var candidates = builder.getCandidatesAt([]);
                         test.ok(includesDefinition(candidates, 'H2', "Audio Equipment"), "should find the peer");
                         test.ok(includesDefinition(candidates, 'H2', "Technology"), "should find the peer");
                         test.done();
