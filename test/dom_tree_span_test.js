@@ -66,8 +66,19 @@ exports.MDPlus = {
             },
 
             should_traverse_up_many_levels_if_bottom_level_consumed: function (test) {
-            },
+                var location = [0, 1, 0];
+                var html = '<div><p>some text <b><u>title!</u></b></p><h2>next headline</h2></div>';
+                var testCase = function (errors, window) {
+                    var root = window.document.children[0];
+                    var div = root.getElementsByTagName('div')[0];
+                    var domTreeSpan = new MDPlus.DomTreeSpan(div);
+                    var nextLocation = domTreeSpan.next(location);
 
+                    test.deepEqual(nextLocation, [1], "should find the <h2> tag from the <u> tag");
+                    test.done();
+                };
+                jsdom.env(html, [], testCase);
+            }
         },
 
         getElementsByTagName: {
