@@ -3,7 +3,7 @@ var jsdom = require('jsdom');
 var MDPlus = require('../lib/md_plus.js');
 
 exports.MDPlus = {
-    DomTreeSpan: {
+    DomTreeIterator: {
         next: {
             should_traverse_down_if_element_is_traversable: function (test) {
                 var location = [0];
@@ -11,8 +11,8 @@ exports.MDPlus = {
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var domTreeSpan = new MDPlus.DomTreeSpan(div);
-                    var nextLocation = domTreeSpan.next(location);
+                    var domTreeIterator = new MDPlus.DomTreeIterator(div);
+                    var nextLocation = domTreeIterator.next(location);
 
                     test.deepEqual(nextLocation, [0, 0], "should find the <b> tag from the <p> tag");
                     test.done();
@@ -26,8 +26,8 @@ exports.MDPlus = {
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var domTreeSpan = new MDPlus.DomTreeSpan(div);
-                    var nextLocation = domTreeSpan.next(location);
+                    var domTreeIterator = new MDPlus.DomTreeIterator(div);
+                    var nextLocation = domTreeIterator.next(location);
 
                     test.deepEqual(nextLocation, [0, 1], "should find the <b> tag from the <p> tag");
                     test.done();
@@ -41,8 +41,8 @@ exports.MDPlus = {
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var domTreeSpan = new MDPlus.DomTreeSpan(div);
-                    var nextLocation = domTreeSpan.next(location);
+                    var domTreeIterator = new MDPlus.DomTreeIterator(div);
+                    var nextLocation = domTreeIterator.next(location);
 
                     test.deepEqual(nextLocation, [0, 3], "should find the second <b> tag within the <p> tag");
                     test.done();
@@ -56,8 +56,8 @@ exports.MDPlus = {
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var domTreeSpan = new MDPlus.DomTreeSpan(div);
-                    var nextLocation = domTreeSpan.next(location);
+                    var domTreeIterator = new MDPlus.DomTreeIterator(div);
+                    var nextLocation = domTreeIterator.next(location);
 
                     test.deepEqual(nextLocation, [1], "should find the <h2> tag from the <b> tag");
                     test.done();
@@ -71,32 +71,13 @@ exports.MDPlus = {
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var domTreeSpan = new MDPlus.DomTreeSpan(div);
-                    var nextLocation = domTreeSpan.next(location);
+                    var domTreeIterator = new MDPlus.DomTreeIterator(div);
+                    var nextLocation = domTreeIterator.next(location);
 
                     test.deepEqual(nextLocation, [1], "should find the <h2> tag from the <u> tag");
                     test.done();
                 };
                 jsdom.env(html, [], testCase);
-            }
-        },
-
-        getElementsByTagName: {
-            topLevel: {
-                should_include_matching_tags: function (test) {
-                    var html = '<p>here</p>'; 
-                    var testCase = function (errors, window) {
-                        var root = window.document.children[0];
-                        var span = new MDPlus.DomTreeSpan(root);
-                        var elements;
-                        span.setBounds([0], [1]);
-                        
-                        elements = span.getElementsByTagName('p');
-                        test.equal(elements.length, 1, "should find one paragraph tag");
-                        test.done();
-                    }
-                    jsdom.env(html, [], testCase);
-                }
             }
         }
     }
