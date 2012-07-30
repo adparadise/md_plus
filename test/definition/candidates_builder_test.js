@@ -1,39 +1,5 @@
 var MDPlus = require('../../lib/md_plus.js');
-
-var definitionSet = function () {
-    return new MDPlus.Definition.Set([
-        new MDPlus.Definition({
-            tag: 'h2',
-            content: "Audio Equipment",
-            classRef: true,
-            children: [
-                new MDPlus.Definition({
-                    tag: 'h3', content: "Walkmen",
-                    classRef: true
-                }),
-                new MDPlus.Definition({
-                    tag: 'h3', content: "Cassettes",
-                    classRef: true
-                })
-            ]
-        }),
-        new MDPlus.Definition({
-            tag: 'h2',
-            content: "Technology",
-            classRef: true,
-            children: [
-                new MDPlus.Definition({
-                    tag: 'h3', content: "Bazookas",
-                    classRef: true
-                }),
-                new MDPlus.Definition({
-                    tag: 'h3', content: "Flux Capacitors",
-                    classRef: true
-                })
-            ]
-        })
-    ]);
-};
+var Helpers = require('../helpers.js').Helpers;
 
 var includesDefinition = function (candidates, tag, content) {
     var index, candidatesLength, definition;
@@ -54,7 +20,7 @@ exports.MDPlus = {
         CandidatesBuilder: {
             getCandidatesAt: {
                 includes_child_definitions: function (test) {
-                    var set = definitionSet();
+                    var set = Helpers.definitionSet();
                     var builder = new MDPlus.Definition.CandidatesBuilder(set);
                     var candidates = builder.getCandidatesAt([0]);
                     test.ok(includesDefinition(candidates, 'H3', "Walkmen"), "should find the first child");
@@ -63,7 +29,7 @@ exports.MDPlus = {
                 },
 
                 includes_peer_definitions: function (test) {
-                    var set = definitionSet();
+                    var set = Helpers.definitionSet();
                     var builder = new MDPlus.Definition.CandidatesBuilder(set);
                     var candidates = builder.getCandidatesAt([0]);
                     test.ok(includesDefinition(candidates, 'H2', "Audio Equipment"), "should find the peer");
@@ -73,7 +39,7 @@ exports.MDPlus = {
 
                 at_top_level: {
                     only_top_level_definitions: function (test) {
-                        var set = definitionSet();
+                        var set = Helpers.definitionSet();
                         var builder = new MDPlus.Definition.CandidatesBuilder(set);
                         var candidates = builder.getCandidatesAt([]);
                         test.ok(includesDefinition(candidates, 'H2', "Audio Equipment"), "should find the peer");

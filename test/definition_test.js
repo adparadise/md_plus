@@ -1,9 +1,34 @@
 var jsdom = require('jsdom');
 
 var MDPlus = require('../lib/md_plus.js');
+var Helpers = require('./helpers.js').Helpers;
 
 exports.MDPlus = {
     Definition: {
+        bakeLocations: {
+            should_match_location: function (test) {
+                var set = Helpers.definitionSet();
+                var builder = new MDPlus.Definition.CandidatesBuilder(set);
+                var definition;
+                set.bakeLocations();
+
+                
+                definition = builder.getDefinitionAtLocation([0,0]);
+                test.deepEqual(definition.getLocation(),     [0,0]);
+
+                definition = builder.getDefinitionAtLocation([0,1]);
+                test.deepEqual(definition.getLocation(),     [0,1]);
+
+                definition = builder.getDefinitionAtLocation([1,0]);
+                test.deepEqual(definition.getLocation(),     [1,0]);
+
+                definition = builder.getDefinitionAtLocation([1,1]);
+                test.deepEqual(definition.getLocation(),     [1,1]);
+
+                test.done();
+            }
+        },
+
         match: {
             matches_tag: function (test) {
                 var def = new MDPlus.Definition({
