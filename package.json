@@ -2,7 +2,11 @@
   "name": "md-plus",
   "main": "./lib/md_plus.js",
   "version": "0.0.1",
-  "dependencies" : {
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adparadise/md_plus.git"
+  },  
+  "devDependencies" : {
     "nodeunit": "*",
     "jsdom": "*"
   }
