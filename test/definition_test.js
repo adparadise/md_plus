@@ -1,7 +1,7 @@
 var jsdom = require('jsdom');
 
 var MDPlus = require('../lib/md_plus.js');
-var Helpers = require('./helpers.js').Helpers;
+var Helpers = require('./helpers/all.js');
 
 exports.MDPlus = {
     Definition: {
@@ -33,7 +33,7 @@ exports.MDPlus = {
             matches_tag: function (test) {
                 var def = new MDPlus.Definition({
                     tag: 'H1',
-                    classRef: true
+                    handler: true
                 });
                 var html = '<h1>here</h1><h2>there</h2>'; 
                 var testCase = function (errors, window) {
@@ -50,7 +50,7 @@ exports.MDPlus = {
             matches_lowercase_tag_definition: function (test) {
                 var def = new MDPlus.Definition({
                     tag: 'h1',
-                    classRef: true
+                    handler: true
                 });
                 var html = '<h1>here</h1>';
                 var testCase = function (errors, window) {
@@ -67,7 +67,7 @@ exports.MDPlus = {
                 var def = new MDPlus.Definition({
                     tag: 'h1',
                     content: /here/,
-                    classRef: true
+                    handler: true
                 });
                 var html = ['<h1>here</h1>' + 
                             '<h1>not</h1>' + 
@@ -90,7 +90,7 @@ exports.MDPlus = {
                 var def = new MDPlus.Definition({
                     tag: 'h1',
                     content: "here",
-                    classRef: true
+                    handler: true
                 });
                 var html = ['<h1>here</h1>' + 
                  '<h1>not</h1>' + 

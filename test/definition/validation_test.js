@@ -20,12 +20,12 @@ exports.MDPlus = {
                 }
             },
             
-            classRef: {
+            handler: {
                 required: function (test) {
                     var def = new MDPlus.Definition({});
                     var errors = def.validate();
-                    var error = errors.errorForField('classRef');
-                    test.ok(error, "should have an error for the classRef field");
+                    var error = errors.errorForField('handler');
+                    test.ok(error, "should have an error for the handler field");
                     test.done();
                 }
             },
@@ -34,7 +34,7 @@ exports.MDPlus = {
                 array_if_present: function (test) {
                     var def = new MDPlus.Definition({
                         tag: "h1",
-                        classRef: true,
+                        handler: true,
                         children: 1
                     });
                     var errors = def.validate();
@@ -46,7 +46,7 @@ exports.MDPlus = {
                 contains_definitions: function (test) {
                     var def = new MDPlus.Definition({
                         tag: "h1",
-                        classRef: true,
+                        handler: true,
                         children: [1]
                     });
                     var errors = def.validate();
@@ -59,7 +59,7 @@ exports.MDPlus = {
                     var invalidDef = new MDPlus.Definition({});
                     var def = new MDPlus.Definition({
                         tag: "h1",
-                        classRef: true,
+                        handler: true,
                         children: [invalidDef]
                     });
                     var errors = def.validate();

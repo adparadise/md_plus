@@ -1,5 +1,5 @@
 var MDPlus = require('../../lib/md_plus.js');
-var Helpers = require('../helpers.js').Helpers;
+var Helpers = require('../helpers/all.js');
 
 var includesDefinition = function (candidates, tag, content) {
     var index, candidatesLength, definition;
