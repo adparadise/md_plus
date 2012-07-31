@@ -5,30 +5,30 @@ exports.definitionSet = function () {
         new MDPlus.Definition({
             tag: 'h2',
             content: "Audio Equipment",
-            classRef: true,
+            handler: true,
             children: [
                 new MDPlus.Definition({
                     tag: 'h3', content: "Walkmen",
-                    classRef: true
+                    handler: true
                 }),
                 new MDPlus.Definition({
                     tag: 'h3', content: "Cassettes",
-                    classRef: true
+                    handler: true
                 })
             ]
         }),
         new MDPlus.Definition({
             tag: 'h2',
             content: "Technology",
-            classRef: true,
+            handler: true,
             children: [
                 new MDPlus.Definition({
                     tag: 'h3', content: "Bazookas",
-                    classRef: true
+                    handler: true
                 }),
                 new MDPlus.Definition({
                     tag: 'h3', content: "Flux Capacitors",
-                    classRef: true
+                    handler: true
                 })
             ]
         })
