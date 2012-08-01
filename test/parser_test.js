@@ -50,18 +50,19 @@ exports.MDPlus = {
             should_set_span_correctly_covering_remainder: function (test) {
                 var html = [
                     '<div>', 
-                    '  <h1>Project Title</h1>', 
-                    '  <h2>Stories</h2>', 
-                    '  <p>Description of stories</p>', 
-                    '  <h2>Deliverables</h2>', 
-                    '  <p>Description of deliverables</p>', 
-                    '</div>'].join("\n");
+                    '<h1>Project Title</h1>', 
+                    '<h2>Stories</h2>', 
+                    '<p>Description of stories</p>', 
+                    '<h2>Deliverables</h2>', 
+                    '<p>Description of deliverables</p>', 
+                    '</div>'].join("");
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var foundSpan;
+                    var foundSpanLow, foundSpanHigh;
                     var handler = function (span) {
-                        foundSpan = span;
+                        foundSpanLow = span.getLow();
+                        foundSpanHigh = span.getHigh();
                     };
                     var set = new MDPlus.Definition.Set([
                         new MDPlus.Definition({
@@ -74,8 +75,49 @@ exports.MDPlus = {
                     var parser = new MDPlus.Parser(div, set)
                     
                     parser.parse();
-                    test.deepEqual(foundSpan.getLow(), [0], "sets the low bound correctly")
-                    test.deepEqual(foundSpan.getHigh(), [], "sets the high bound correctly")
+                    test.deepEqual(foundSpanLow, [0], "sets the low bound correctly")
+                    test.deepEqual(foundSpanHigh, [], "sets the high bound correctly")
+                    
+                    test.done();
+                };
+                jsdom.env(html, [], testCase);
+            },
+
+            should_set_span_correctly_up_to_next_match: function (test) {
+                var html = [
+                    '<div>', 
+                    '<h1>Project Title</h1>', 
+                    '<h2>Stories</h2>', 
+                    '<p>Description of stories</p>', 
+                    '<h2>Deliverables</h2>', 
+                    '<p>Description of deliverables</p>', 
+                    '</div>'].join("");
+                var testCase = function (errors, window) {
+                    var root = window.document.children[0];
+                    var div = root.getElementsByTagName('div')[0];
+                    var callCount = 0;
+                    var foundSpanLow, foundSpanHigh
+                    var handler = function (span) {
+                        callCount += 1;
+                        foundSpanLow = span.getLow();
+                        foundSpanHigh = span.getHigh();
+                    };
+                    var set = new MDPlus.Definition.Set([
+                        new MDPlus.Definition({
+                            tag: 'h1', handler: handler,
+                            children: [
+                                new MDPlus.Definition({ tag: 'h2', handler: function () {} })
+                            ]
+                        })
+                    ]);
+                    set.bakeLocations();
+
+                    var parser = new MDPlus.Parser(div, set)
+                    
+                    parser.parse();
+                    test.equal(callCount, 1, "should call the h1 handler once");
+                    test.deepEqual(foundSpanLow, [0], "sets the low bound correctly")
+                    test.deepEqual(foundSpanHigh, [1], "sets the high bound correctly")
                     
                     test.done();
                 };
