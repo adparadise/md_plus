@@ -1,6 +1,6 @@
 var jsdom = require('jsdom');
 
-var MDPlus = require('../lib/md_plus.js');
+var MDPlus = require('../md_plus.js');
 
 exports.MDPlus = {
     DomTreeIterator: {

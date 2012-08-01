@@ -1,6 +1,6 @@
 {
   "name": "md-plus",
-  "main": "./lib/md_plus.js",
+  "main": "md_plus.js",
   "version": "0.0.1",
   "repository": {
     "type": "git",
