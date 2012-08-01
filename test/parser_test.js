@@ -47,6 +47,41 @@ exports.MDPlus = {
                 jsdom.env(html, [], testCase);
             },
 
+            should_set_span_correctly_covering_remainder: function (test) {
+                var html = [
+                    '<div>', 
+                    '  <h1>Project Title</h1>', 
+                    '  <h2>Stories</h2>', 
+                    '  <p>Description of stories</p>', 
+                    '  <h2>Deliverables</h2>', 
+                    '  <p>Description of deliverables</p>', 
+                    '</div>'].join("\n");
+                var testCase = function (errors, window) {
+                    var root = window.document.children[0];
+                    var div = root.getElementsByTagName('div')[0];
+                    var foundSpan;
+                    var handler = function (span) {
+                        foundSpan = span;
+                    };
+                    var set = new MDPlus.Definition.Set([
+                        new MDPlus.Definition({
+                            tag: 'h1',
+                            handler: handler
+                        })
+                    ]);
+                    set.bakeLocations();
+
+                    var parser = new MDPlus.Parser(div, set)
+                    
+                    parser.parse();
+                    test.deepEqual(foundSpan.getLow(), [0], "sets the low bound correctly")
+                    test.deepEqual(foundSpan.getHigh(), [], "sets the high bound correctly")
+                    
+                    test.done();
+                };
+                jsdom.env(html, [], testCase);
+            },
+
             should_not_match_elements_nested_in_other_trees: function (test) {
                 var html = '<div><h1>matching</h1><h2>subheader</h2></div>';
                 var testCase = function (errors, window) {
