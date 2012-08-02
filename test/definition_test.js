@@ -5,25 +5,25 @@ var Helpers = require('./helpers/all.js');
 
 exports.MDPlus = {
     Definition: {
-        bakeLocations: {
-            should_match_location: function (test) {
+        bakeIds: {
+            should_match_id: function (test) {
                 var set = Helpers.definitionSet();
                 var builder = new MDPlus.Definition.CandidatesBuilder(set);
                 var definition;
-                set.bakeLocations();
+                set.bakeIDs();
 
                 
-                definition = builder.getDefinitionAtLocation([0,0]);
-                test.deepEqual(definition.getLocation(),     [0,0]);
+                definition = builder.getDefinitionAtID([0,0]);
+                test.deepEqual(definition.getID(),     [0,0]);
 
-                definition = builder.getDefinitionAtLocation([0,1]);
-                test.deepEqual(definition.getLocation(),     [0,1]);
+                definition = builder.getDefinitionAtID([0,1]);
+                test.deepEqual(definition.getID(),     [0,1]);
 
-                definition = builder.getDefinitionAtLocation([1,0]);
-                test.deepEqual(definition.getLocation(),     [1,0]);
+                definition = builder.getDefinitionAtID([1,0]);
+                test.deepEqual(definition.getID(),     [1,0]);
 
-                definition = builder.getDefinitionAtLocation([1,1]);
-                test.deepEqual(definition.getLocation(),     [1,1]);
+                definition = builder.getDefinitionAtID([1,1]);
+                test.deepEqual(definition.getID(),     [1,1]);
 
                 test.done();
             }

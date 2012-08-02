@@ -35,7 +35,7 @@ exports.MDPlus = {
                             handler: handler
                         })
                     ]);
-                    set.bakeLocations();
+                    set.bakeIDs();
 
                     var parser = new MDPlus.Parser(div, set)
                     
@@ -70,7 +70,7 @@ exports.MDPlus = {
                             handler: handler
                         })
                     ]);
-                    set.bakeLocations();
+                    set.bakeIDs();
 
                     var parser = new MDPlus.Parser(div, set)
                     
@@ -110,7 +110,7 @@ exports.MDPlus = {
                             ]
                         })
                     ]);
-                    set.bakeLocations();
+                    set.bakeIDs();
 
                     var parser = new MDPlus.Parser(div, set)
                     
@@ -151,7 +151,7 @@ exports.MDPlus = {
                             ]
                         })
                     ]);
-                    set.bakeLocations();
+                    set.bakeIDs();
                     
                     var parser = new MDPlus.Parser(div, set)
                     
