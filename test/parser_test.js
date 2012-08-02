@@ -8,10 +8,10 @@ exports.MDPlus = {
         parse: {
             should_terminate: function (test) {
                 var html = '<div></div>';
+                var set = new MDPlus.Definition.Set([]);
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var set = new MDPlus.Definition.Set([]);
                     var parser = new MDPlus.Parser(div, set)
                     
                     parser.parse();
@@ -22,20 +22,21 @@ exports.MDPlus = {
 
             should_pass_span_to_definition: function (test) {
                 var html = '<div><h1>matching</h1></div>';
+                var callCount = 0;
+                var handler = function (span) {
+                    callCount += 1;
+                };
+                var set = new MDPlus.Definition.Set([
+                    new MDPlus.Definition({
+                        tag: 'h1', content: 'matching',
+                        handler: handler
+                    })
+                ]);
+                set.bakeIDs();
+
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var callCount = 0;
-                    var handler = function (span) {
-                        callCount += 1;
-                    };
-                    var set = new MDPlus.Definition.Set([
-                        new MDPlus.Definition({
-                            tag: 'h1', content: 'matching',
-                            handler: handler
-                        })
-                    ]);
-                    set.bakeIDs();
 
                     var parser = new MDPlus.Parser(div, set)
                     
@@ -54,21 +55,22 @@ exports.MDPlus = {
                     '<h2>Stories</h2><p>Description of stories</p>', 
                     '<h2>Deliverables</h2><p>Description of deliverables</p>', 
                     '</div>'].join("");
+                var foundSpanLow, foundSpanHigh;
+                var handler = function (span) {
+                    foundSpanLow = span.getLow();
+                    foundSpanHigh = span.getHigh();
+                };
+                var set = new MDPlus.Definition.Set([
+                    new MDPlus.Definition({
+                        tag: 'h1',
+                        handler: handler
+                    })
+                ]);
+                set.bakeIDs();
+
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var foundSpanLow, foundSpanHigh;
-                    var handler = function (span) {
-                        foundSpanLow = span.getLow();
-                        foundSpanHigh = span.getHigh();
-                    };
-                    var set = new MDPlus.Definition.Set([
-                        new MDPlus.Definition({
-                            tag: 'h1',
-                            handler: handler
-                        })
-                    ]);
-                    set.bakeIDs();
 
                     var parser = new MDPlus.Parser(div, set)
                     
@@ -88,25 +90,25 @@ exports.MDPlus = {
                     '<h2>Stories</h2><p>Description of stories</p>', 
                     '<h2>Deliverables</h2><p>Description of deliverables</p>', 
                     '</div>'].join("");
+                var callCount = 0;
+                var foundSpanLow, foundSpanHigh
+                var handler = function (span) {
+                    callCount += 1;
+                    foundSpanLow = span.getLow();
+                    foundSpanHigh = span.getHigh();
+                };
+                var set = new MDPlus.Definition.Set([
+                    new MDPlus.Definition({
+                        tag: 'h1', handler: handler,
+                        children: [
+                            new MDPlus.Definition({ tag: 'h2', handler: function () {} })
+                        ]
+                    })
+                ]);
+                set.bakeIDs();
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var callCount = 0;
-                    var foundSpanLow, foundSpanHigh
-                    var handler = function (span) {
-                        callCount += 1;
-                        foundSpanLow = span.getLow();
-                        foundSpanHigh = span.getHigh();
-                    };
-                    var set = new MDPlus.Definition.Set([
-                        new MDPlus.Definition({
-                            tag: 'h1', handler: handler,
-                            children: [
-                                new MDPlus.Definition({ tag: 'h2', handler: function () {} })
-                            ]
-                        })
-                    ]);
-                    set.bakeIDs();
 
                     var parser = new MDPlus.Parser(div, set)
                     
@@ -128,33 +130,33 @@ exports.MDPlus = {
                     '<h3>Deliverables</h3><p>Description of deliverables</p>', 
                     '<h2>Other</h2><p>Description of other</p>', 
                     '</div>'].join("");
+                var callCount = 0;
+                var foundSpanLow, foundSpanHigh
+                var handler = function (span) {
+                    callCount += 1;
+                    foundSpanLow = span.getLow();
+                    foundSpanHigh = span.getHigh();
+                };
+                var set = new MDPlus.Definition.Set([
+                    new MDPlus.Definition({
+                        tag: 'h1', handler: function () {},
+                        children: [
+                            new MDPlus.Definition({
+                                tag: 'h2', handler: handler,
+                                children: [
+                                    new MDPlus.Definition({
+                                        tag: 'h3', handler: function () {}
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]);
+                set.bakeIDs();
+
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var callCount = 0;
-                    var foundSpanLow, foundSpanHigh
-                    var handler = function (span) {
-                        callCount += 1;
-                        foundSpanLow = span.getLow();
-                        foundSpanHigh = span.getHigh();
-                    };
-                    var set = new MDPlus.Definition.Set([
-                        new MDPlus.Definition({
-                            tag: 'h1', handler: function () {},
-                            children: [
-                                new MDPlus.Definition({
-                                    tag: 'h2', handler: handler,
-                                    children: [
-                                        new MDPlus.Definition({
-                                            tag: 'h3', handler: function () {}
-                                        })
-                                    ]
-                                })
-                            ]
-                        })
-                    ]);
-                    set.bakeIDs();
-
                     var parser = new MDPlus.Parser(div, set)
                     
                     parser.parse();
@@ -169,33 +171,33 @@ exports.MDPlus = {
 
             should_not_match_elements_nested_in_other_trees: function (test) {
                 var html = '<div><h1>matching</h1><h2>subheader</h2></div>';
+                var matchingHandler = function () {
+                    matchingHandler.callCount = (this.callCount || 0) + 1;
+                }
+                var subHandler = function () {
+                    subHandler.callCount = (this.callCount || 0) + 1;
+                };
+                var set = new MDPlus.Definition.Set([
+                    new MDPlus.Definition({
+                        tag: 'h1', content: 'matching',
+                        handler: matchingHandler
+                    }),
+                    new MDPlus.Definition({
+                        tag: 'div', content: 'other',
+                        handler: function () {},
+                        children: [
+                            new MDPlus.Definition({
+                                tag: 'h2', content: "subheader",
+                                handler: subHandler
+                            })
+                        ]
+                    })
+                ]);
+                set.bakeIDs();
+
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
                     var div = root.getElementsByTagName('div')[0];
-                    var matchingHandler = function () {
-                        matchingHandler.callCount = (this.callCount || 0) + 1;
-                    }
-                    var subHandler = function () {
-                        subHandler.callCount = (this.callCount || 0) + 1;
-                    };
-                    var set = new MDPlus.Definition.Set([
-                        new MDPlus.Definition({
-                            tag: 'h1', content: 'matching',
-                            handler: matchingHandler
-                        }),
-                        new MDPlus.Definition({
-                            tag: 'div', content: 'other',
-                            handler: function () {},
-                            children: [
-                                new MDPlus.Definition({
-                                    tag: 'h2', content: "subheader",
-                                    handler: subHandler
-                                })
-                            ]
-                        })
-                    ]);
-                    set.bakeIDs();
-                    
                     var parser = new MDPlus.Parser(div, set)
                     
                     parser.parse();
