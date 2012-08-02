@@ -21,15 +21,31 @@ exports.MDPlus = {
         },
 
         parse: {
-            should: function (test) {
-                var html = '<div><h1>Project Title</h1></div>';
+            should_interact_with_parser: function (test) {
+                var html = ['<div><h1>Project Title</h1>',
+                            '<h2>Stories</h2><p>stories description</p>',
+                            '</div>'].join();
                 
                 var set = new MDPlus.Definition.Set([
                     new MDPlus.Definition({
-                        tag: 'h1'
+                        tag: 'h1',
+                        children: [
+                            new MDPlus.Definition({
+                                tag: 'h2'
+                            })
+                        ]
                     })
                 ]);
-                var treeBuilder = new MDPlus.TreeBuilder({}, set);
+                var classRef = function () {
+                    this._children = [];
+                    this.build = function (span, definition) {
+                        this.label = span.getMatchingElement().textContent;
+                    };
+                    this.push = function (child) {
+                        this._children.push(child);
+                    }
+                };
+                var treeBuilder = new MDPlus.TreeBuilder({classRef: classRef}, set);
                 treeBuilder.bakeDefinitions();
                 
                 var testCase = function (errors, window) {
@@ -41,6 +57,7 @@ exports.MDPlus = {
                     parser.parse();
                     tree = treeBuilder.getObjects()[0];
                     test.equal(tree.label, 'Project Title', "built the label from textContent");
+                    test.equal(tree._children[0].label, 'Stories', "assign the child correctly");
                     test.done();
                 }
                 jsdom.env(html, [], testCase);
