@@ -35,6 +35,7 @@ exports.MDPlus = {
                     tag: 'H1',
                     handler: true
                 });
+                def.bakeIDs([]);
                 var html = '<h1>here</h1><h2>there</h2>'; 
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
@@ -47,11 +48,48 @@ exports.MDPlus = {
                 jsdom.env(html, [], testCase);
             },
 
+            matches_or_joined_tags: function (test) {
+                var def = new MDPlus.Definition({
+                    tag: 'H1|H2',
+                    handler: true
+                });
+                def.bakeIDs([]);
+                var html = '<h1>here</h1><h2>there</h2>'; 
+                var testCase = function (errors, window) {
+                    var root = window.document.children[0];
+                    var h1 = root.getElementsByTagName('h1')[0];
+                    var h2 = root.getElementsByTagName('h2')[0];
+                    test.ok(def.match(h1), "should match correct tag");
+                    test.ok(def.match(h2), "should not match incorrect tag");
+                    test.done();
+                }
+                jsdom.env(html, [], testCase);
+            },
+
+            matches_array_of_tags: function (test) {
+                var def = new MDPlus.Definition({
+                    tag: ['H1', 'H2'],
+                    handler: true
+                });
+                def.bakeIDs([]);
+                var html = '<h1>here</h1><h2>there</h2>'; 
+                var testCase = function (errors, window) {
+                    var root = window.document.children[0];
+                    var h1 = root.getElementsByTagName('h1')[0];
+                    var h2 = root.getElementsByTagName('h2')[0];
+                    test.ok(def.match(h1), "should match correct tag");
+                    test.ok(def.match(h2), "should not match incorrect tag");
+                    test.done();
+                }
+                jsdom.env(html, [], testCase);
+            },
+
             matches_lowercase_tag_definition: function (test) {
                 var def = new MDPlus.Definition({
                     tag: 'h1',
                     handler: true
                 });
+                def.bakeIDs([]);
                 var html = '<h1>here</h1>';
                 var testCase = function (errors, window) {
                     var root = window.document.children[0];
@@ -69,6 +107,7 @@ exports.MDPlus = {
                     content: /here/,
                     handler: true
                 });
+                def.bakeIDs([]);
                 var html = ['<h1>here</h1>' + 
                             '<h1>not</h1>' + 
                             '<h2>here</h2>'].join("");
@@ -92,6 +131,7 @@ exports.MDPlus = {
                     content: "here",
                     handler: true
                 });
+                def.bakeIDs([]);
                 var html = ['<h1>here</h1>' + 
                  '<h1>not</h1>' + 
                  '<h2>here</h2>'].join("");
