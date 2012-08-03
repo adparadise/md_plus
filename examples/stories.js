@@ -13,13 +13,28 @@ window.StoriesGenerator = function () {
         this._tag = tag;
     };
 
+    // Alternate sequence definition for StackBuilder:
+    // Return depth by returning the header type minus one.
+    var sequence = function (span, definition) {
+        var tagName = span.getMatchingElement().tagName;
+        var pattern = /^h([0-9])$/i;
+        var match = pattern.exec(tagName);
+        if (match) {
+            return parseInt(match[1]) - 1;
+        }
+        return 0;
+    };
+    
     this.initialize = function (container) {
         this._container = container;
+        this._stack = new MDPlus.StackBuilder();
+        this._stack.setSequence(MDPlus.StackBuilder.HEADERS);
+
         this._definition = new MDPlus.Definition.Set([
             new MDPlus.Definition({
-                tag: 'h2',
-                context: this,
-                handler: this.setTag,
+                tag: /^h[0-9]$/i,
+                context: this._stack,
+                handler: this._stack.handler,
                 children: [
                     new MDPlus.Definition({
                         tag: 'li',
@@ -32,13 +47,10 @@ window.StoriesGenerator = function () {
         this._definition.bakeIDs();
     };
 
-    this.setTag = function (span, definition) {
-        this._currentTag = span.getMatchingElement().textContent;
-    };
-
     this.addStory = function (span, definition) {
         var storyName = span.getMatchingElement().textContent;
-        this._stories.push(new Story(storyName, this._currentTag));
+        var tag = this._stack.getStack().join("_");
+        this._stories.push(new Story(storyName, tag));
     };
 
     this.consume = function () {
