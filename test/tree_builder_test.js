@@ -8,7 +8,7 @@ exports.MDPlus = {
         bakeDefinitions: {
             should_create_handlers: function (test) {
                 var set = new MDPlus.Definition.Set([
-                    new MDPlus.Definition({
+                    new MDPlus.Definition.Definition({
                         tag: 'h1'
                     })
                 ]);
@@ -27,10 +27,10 @@ exports.MDPlus = {
                             '</div>'].join();
                 
                 var set = new MDPlus.Definition.Set([
-                    new MDPlus.Definition({
+                    new MDPlus.Definition.Definition({
                         tag: 'h1',
                         children: [
-                            new MDPlus.Definition({
+                            new MDPlus.Definition.Definition({
                                 tag: 'h2'
                             })
                         ]

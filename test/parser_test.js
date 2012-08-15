@@ -27,7 +27,7 @@ exports.MDPlus = {
                     callCount += 1;
                 };
                 var set = new MDPlus.Definition.Set([
-                    new MDPlus.Definition({
+                    new MDPlus.Definition.Definition({
                         tag: 'h1', content: 'matching',
                         handler: handler
                     })
@@ -61,7 +61,7 @@ exports.MDPlus = {
                     foundSpanHigh = span.getHigh();
                 };
                 var set = new MDPlus.Definition.Set([
-                    new MDPlus.Definition({
+                    new MDPlus.Definition.Definition({
                         tag: 'h1',
                         handler: handler
                     })
@@ -98,10 +98,10 @@ exports.MDPlus = {
                     foundSpanHigh = span.getHigh();
                 };
                 var set = new MDPlus.Definition.Set([
-                    new MDPlus.Definition({
+                    new MDPlus.Definition.Definition({
                         tag: 'h1', handler: handler,
                         children: [
-                            new MDPlus.Definition({ tag: 'h2', handler: function () {} })
+                            new MDPlus.Definition.Definition({ tag: 'h2', handler: function () {} })
                         ]
                     })
                 ]);
@@ -138,13 +138,13 @@ exports.MDPlus = {
                     foundSpanHigh = span.getHigh();
                 };
                 var set = new MDPlus.Definition.Set([
-                    new MDPlus.Definition({
+                    new MDPlus.Definition.Definition({
                         tag: 'h1', handler: function () {},
                         children: [
-                            new MDPlus.Definition({
+                            new MDPlus.Definition.Definition({
                                 tag: 'h2', handler: handler,
                                 children: [
-                                    new MDPlus.Definition({
+                                    new MDPlus.Definition.Definition({
                                         tag: 'h3', handler: function () {}
                                     })
                                 ]
@@ -178,15 +178,15 @@ exports.MDPlus = {
                     subHandler.callCount = (this.callCount || 0) + 1;
                 };
                 var set = new MDPlus.Definition.Set([
-                    new MDPlus.Definition({
+                    new MDPlus.Definition.Definition({
                         tag: 'h1', content: 'matching',
                         handler: matchingHandler
                     }),
-                    new MDPlus.Definition({
+                    new MDPlus.Definition.Definition({
                         tag: 'div', content: 'other',
                         handler: function () {},
                         children: [
-                            new MDPlus.Definition({
+                            new MDPlus.Definition.Definition({
                                 tag: 'h2', content: "subheader",
                                 handler: subHandler
                             })

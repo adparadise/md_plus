@@ -4,7 +4,7 @@ exports.MDPlus = {
     Definition: {
         validate: {
             description_provided: function (test) {
-                var def = new MDPlus.Definition();
+                var def = new MDPlus.Definition.Definition();
                 var errors = def.validate();
                 test.ok(errors.anyErrors(), "should be invalid");
                 test.done();
@@ -12,7 +12,7 @@ exports.MDPlus = {
 
             tag: {
                 required: function (test) {
-                    var def = new MDPlus.Definition({});
+                    var def = new MDPlus.Definition.Definition({});
                     var errors = def.validate();
                     var error = errors.errorForField('tag');
                     test.ok(error, "should have an error for the tag field");
@@ -22,7 +22,7 @@ exports.MDPlus = {
             
             handler: {
                 required: function (test) {
-                    var def = new MDPlus.Definition({});
+                    var def = new MDPlus.Definition.Definition({});
                     var errors = def.validate();
                     var error = errors.errorForField('handler');
                     test.ok(error, "should have an error for the handler field");
@@ -32,7 +32,7 @@ exports.MDPlus = {
 
             children: {
                 array_if_present: function (test) {
-                    var def = new MDPlus.Definition({
+                    var def = new MDPlus.Definition.Definition({
                         tag: "h1",
                         handler: true,
                         children: 1
@@ -44,7 +44,7 @@ exports.MDPlus = {
                 },
 
                 contains_definitions: function (test) {
-                    var def = new MDPlus.Definition({
+                    var def = new MDPlus.Definition.Definition({
                         tag: "h1",
                         handler: true,
                         children: [1]
@@ -56,8 +56,8 @@ exports.MDPlus = {
                 },
 
                 are_all_valid: function (test) {
-                    var invalidDef = new MDPlus.Definition({});
-                    var def = new MDPlus.Definition({
+                    var invalidDef = new MDPlus.Definition.Definition({});
+                    var def = new MDPlus.Definition.Definition({
                         tag: "h1",
                         handler: true,
                         children: [invalidDef]

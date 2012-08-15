@@ -31,7 +31,7 @@ exports.MDPlus = {
                 },
 
                 requires_array_of_valid_definitions: function (test) {
-                    var definition = new MDPlus.Definition({});
+                    var definition = new MDPlus.Definition.Definition({});
                     var set = new MDPlus.Definition.Set([definition]);
                     var errors = set.validate();
                     var error = errors.errorForField('definitions');

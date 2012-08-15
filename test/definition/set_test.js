@@ -8,13 +8,13 @@ exports.MDPlus = {
             eachDefinition: {
                 should_apply_to_each_definition: function (test) {
                     var set = new MDPlus.Definition.Set([
-                        new MDPlus.Definition({
+                        new MDPlus.Definition.Definition({
                             tag: 'h1', handler: function () {},
                             children: [
-                                new MDPlus.Definition({
+                                new MDPlus.Definition.Definition({
                                     tag: 'h2', handler: function () {},
                                     children: [
-                                        new MDPlus.Definition({
+                                        new MDPlus.Definition.Definition({
                                             tag: 'h3', handler: function () {}
                                         })
                                     ]

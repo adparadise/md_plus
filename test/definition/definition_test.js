@@ -1,7 +1,7 @@
 var jsdom = require('jsdom');
 
-var MDPlus = require('../md_plus.js');
-var Helpers = require('./helpers/all.js');
+var MDPlus = require('../../md_plus.js');
+var Helpers = require('../helpers/all.js');
 
 exports.MDPlus = {
     Definition: {
@@ -31,7 +31,7 @@ exports.MDPlus = {
 
         match: {
             matches_tag: function (test) {
-                var def = new MDPlus.Definition({
+                var def = new MDPlus.Definition.Definition({
                     tag: 'H1',
                     handler: true
                 });
@@ -49,7 +49,7 @@ exports.MDPlus = {
             },
 
             matches_or_joined_tags: function (test) {
-                var def = new MDPlus.Definition({
+                var def = new MDPlus.Definition.Definition({
                     tag: 'H1|H2',
                     handler: true
                 });
@@ -67,7 +67,7 @@ exports.MDPlus = {
             },
 
             matches_array_of_tags: function (test) {
-                var def = new MDPlus.Definition({
+                var def = new MDPlus.Definition.Definition({
                     tag: ['H1', 'H2'],
                     handler: true
                 });
@@ -85,7 +85,7 @@ exports.MDPlus = {
             },
 
             matches_regular_expressions: function (test) {
-                var def = new MDPlus.Definition({
+                var def = new MDPlus.Definition.Definition({
                     tag: /^h[0-9]$/i,
                     handler: true
                 });
@@ -103,7 +103,7 @@ exports.MDPlus = {
             },
 
             matches_lowercase_tag_definition: function (test) {
-                var def = new MDPlus.Definition({
+                var def = new MDPlus.Definition.Definition({
                     tag: 'h1',
                     handler: true
                 });
@@ -120,7 +120,7 @@ exports.MDPlus = {
             },
 
             matches_regexp_contents: function (test) {
-                var def = new MDPlus.Definition({
+                var def = new MDPlus.Definition.Definition({
                     tag: 'h1',
                     content: /here/,
                     handler: true
@@ -144,7 +144,7 @@ exports.MDPlus = {
             },
 
             matches_string_contents: function (test) {
-                var def = new MDPlus.Definition({
+                var def = new MDPlus.Definition.Definition({
                     tag: 'h1',
                     content: "here",
                     handler: true
