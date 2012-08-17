@@ -20,16 +20,6 @@ exports.MDPlus = {
                 }
             },
             
-            handler: {
-                required: function (test) {
-                    var def = new MDPlus.Definition.Definition({});
-                    var errors = def.validate();
-                    var error = errors.errorForField('handler');
-                    test.ok(error, "should have an error for the handler field");
-                    test.done();
-                }
-            },
-
             children: {
                 array_if_present: function (test) {
                     var def = new MDPlus.Definition.Definition({

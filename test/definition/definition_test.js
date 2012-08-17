@@ -1,5 +1,4 @@
 var jsdom = require('jsdom');
-
 var MDPlus = require('../../md_plus.js');
 var Helpers = require('../helpers/all.js');
 
