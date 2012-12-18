@@ -49,7 +49,7 @@ exports.MDPlus = {
                 };
                 jsdom.env(html, [], testCase);
             },
-            
+
             should_traverse_up_one_level_if_bottom_level_consumed: function (test) {
                 var location = [0, 1];
                 var html = '<div><p>some text <b>title!</b></p><h2>next headline</h2></div>';
@@ -75,6 +75,54 @@ exports.MDPlus = {
                     var nextLocation = domTreeIterator.next(location);
 
                     test.deepEqual(nextLocation, [1], "should find the <h2> tag from the <u> tag");
+                    test.done();
+                };
+                jsdom.env(html, [], testCase);
+            }
+        },
+
+        nextShallow: {
+            should_traverse: function (test) {
+                var location = [0];
+                var html = '<div><p><b>bold</b></p><p>two</p></div>';
+                var testCase = function (errors, window) {
+                    var root = window.document.children[0];
+                    var div = root.getElementsByTagName('div')[0];
+                    var domTreeIterator = new MDPlus.DomTreeIterator(div);
+                    var nextLocation = domTreeIterator.nextPeer(location);
+
+                    test.equal(domTreeIterator.elementAtLocation(nextLocation).tagName, 'P');
+                    test.deepEqual(nextLocation, [1], "should find the <p> tag, not the <b> inside");
+                    test.done();
+                };
+                jsdom.env(html, [], testCase);
+            },
+
+            should_terminate_at_end_of_input: function (test) {
+                var location = [1];
+                var html = '<div><p><b>bold</b></p><p>two</p></div>';
+                var testCase = function (errors, window) {
+                    var root = window.document.children[0];
+                    var div = root.getElementsByTagName('div')[0];
+                    var domTreeIterator = new MDPlus.DomTreeIterator(div);
+                    var nextLocation = domTreeIterator.nextPeer(location);
+
+                    test.deepEqual(nextLocation, [], "should terminate");
+                    test.done();
+                };
+                jsdom.env(html, [], testCase);
+            },
+
+            should_terminate_with_no_more_peers: function (test) {
+                var location = [0, 0];
+                var html = '<div><p><b>bold</b></p><p>two</p></div>';
+                var testCase = function (errors, window) {
+                    var root = window.document.children[0];
+                    var div = root.getElementsByTagName('div')[0];
+                    var domTreeIterator = new MDPlus.DomTreeIterator(div);
+                    var nextLocation = domTreeIterator.nextPeer(location);
+
+                    test.deepEqual(nextLocation, [], "should terminate");
                     test.done();
                 };
                 jsdom.env(html, [], testCase);
